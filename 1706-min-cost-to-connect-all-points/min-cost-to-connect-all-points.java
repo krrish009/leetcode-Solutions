@@ -39,7 +39,7 @@ class Solution {
 
        PriorityQueue<triplet> pq=new PriorityQueue<>((a,b)-> a.dist-b.dist);
        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
+            for(int j=i+1;j<n;j++){
                 int x1=points[i][0],y1=points[i][1];
                 int x2=points[j][0],y2=points[j][1];
                 int ManDist=Math.abs(x2-x1) + Math.abs(y2-y1);
