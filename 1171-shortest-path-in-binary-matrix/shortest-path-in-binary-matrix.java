@@ -1,74 +1,49 @@
+import java.util.*;
+
 class Solution {
-    class triplet{
-        int row;
-        int col;
-        int dist;
-        triplet(int r,int c,int d){
-            this.row=r;
-            this.col=c;
-            this.dist=d;
-        }
-    }
     public int shortestPathBinaryMatrix(int[][] grid) {
-        int n=grid.length;
+        int n = grid.length;
+        
+        // Edge Case: If start or end cell is blocked
         if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) {
-            return -1; 
-        } else if (n == 1) {
-            return 1;  
+            return -1;
         }
 
-        Queue<triplet> q = new LinkedList<>();
-        q.add(new triplet(0, 0, 1));
+        // 8-directional movement offsets
+        int[] dRow = {-1, -1, -1, 0, 0, 1, 1, 1};
+        int[] dCol = {-1, 0, 1, -1, 1, -1, 0, 1};
+
+        // Queue stores {row, col, current_distance}
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{0, 0, 1}); // Start at (0, 0) with distance 1
+        
+        // Mark starting cell as visited
         grid[0][0] = 1;
-        while(!q.isEmpty()){
-            triplet front=q.poll();
-            int r=front.row,c=front.col,dist=front.dist;
-            if(r == n - 1 && c == n - 1) return dist;
-            if(r-1 >= 0 && grid[r-1][c] == 0){
-                grid[r-1][c]=1;
-                q.add(new triplet(r-1, c, dist + 1));
-            }// 2. DOWN (r + 1, c)
-            if (r + 1 < n && grid[r + 1][c] == 0) {
-                grid[r + 1][c] = 1;
-                q.add(new triplet(r + 1, c, dist + 1));
+
+        while (!q.isEmpty()) {
+            int[] current = q.poll();
+            int r = current[0];
+            int c = current[1];
+            int dist = current[2];
+
+            // Reached destination
+            if (r == n - 1 && c == n - 1) {
+                return dist;
             }
 
-            // 3. LEFT (r, c - 1)
-            if (c - 1 >= 0 && grid[r][c - 1] == 0) {
-                grid[r][c - 1] = 1;
-                q.add(new triplet(r, c - 1, dist + 1));
-            }
+            // Explore all 8 directions
+            for (int i = 0; i < 8; i++) {
+                int newRow = r + dRow[i];
+                int newCol = c + dCol[i];
 
-            // 4. RIGHT (r, c + 1)
-            if (c + 1 < n && grid[r][c + 1] == 0) {
-                grid[r][c + 1] = 1;
-                q.add(new triplet(r, c + 1, dist + 1));
-            }
-
-            // 5. TOP-LEFT DIAGONAL (r - 1, c - 1)
-            if (r - 1 >= 0 && c - 1 >= 0 && grid[r - 1][c - 1] == 0) {
-                grid[r - 1][c - 1] = 1;
-                q.add(new triplet(r - 1, c - 1, dist + 1));
-            }
-
-            // 6. TOP-RIGHT DIAGONAL (r - 1, c + 1)
-            if (r - 1 >= 0 && c + 1 < n && grid[r - 1][c + 1] == 0) {
-                grid[r - 1][c + 1] = 1;
-                q.add(new triplet(r - 1, c + 1, dist + 1));
-            }
-
-            // 7. BOTTOM-LEFT DIAGONAL (r + 1, c - 1)
-            if (r + 1 < n && c - 1 >= 0 && grid[r + 1][c - 1] == 0) {
-                grid[r + 1][c - 1] = 1;
-                q.add(new triplet(r + 1, c - 1, dist + 1));
-            }
-
-            // 8. BOTTOM-RIGHT DIAGONAL (r + 1, c + 1)
-            if (r + 1 < n && c + 1 < n && grid[r + 1][c + 1] == 0) {
-                grid[r + 1][c + 1] = 1;
-                q.add(new triplet(r + 1, c + 1, dist + 1));
+                // Check bounds and ensure the cell is open (0)
+                if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < n && grid[newRow][newCol] == 0) {
+                    q.add(new int[]{newRow, newCol, dist + 1});
+                    grid[newRow][newCol] = 1; // Mark as visited immediately
+                }
             }
         }
-        return -1;
+
+        return -1; // Path not found
     }
 }
