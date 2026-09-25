@@ -7,8 +7,7 @@ class Solution {
         HashSet<Integer> set = new HashSet<>();
 
         for(int i = 0; i < s.length(); i++){
-            int val = map.get(s.charAt(i));
-            set.add(val);
+            set.add(map.get(s.charAt(i)));
         }
         if( set.size() != 1) return false;
         return true;
