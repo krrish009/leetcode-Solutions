@@ -81,7 +81,7 @@ class Solution {
             List<String> account = new ArrayList<>();
             account.add(accounts.get(rootIdx).get(0));
             account.addAll(emails);
-            
+
             mergedAccounts.add(account);
         }
         return mergedAccounts;
