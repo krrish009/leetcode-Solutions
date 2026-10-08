@@ -23,7 +23,7 @@ class Solution {
                 // Since the array is sorted, nums[j] - nums[i] is always >= 0
                 if (nums[j] - nums[i] == k) {
                     count++;
-                    break; // Found the matching pair for nums[i], move to next i
+                    // break; // Found the matching pair for nums[i], move to next i
                 }
             }
         }
